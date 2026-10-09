@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Poison Candy - The Witch's Duel</title>
+  <style>
+    /* ========================================================
+       100% ZERO-EXTERNAL-DEPENDENCY CSS (Bypasses School Firewalls)
+       ======================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: radial-gradient(circle at 50% 15%, #250b44 0%, #120224 60%, #06000d 100%);
+      color: #f1f5f9;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 8px 12px;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    /* Top Header Bar */
+    .top-header {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(20, 4, 40, 0.92);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      padding: 8px 14px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(124, 58, 237, 0.25);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #e9d5ff, #f472b6, #06ffa5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      font-weight: 500;
+      color: #c084fc;
+      margin-left: 4px;
+    }
+
+    /* Controls & Buttons */
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lesson-toggle-box {
+      display: flex;
+      background: rgba(30, 8, 60, 0.9);
+      border: 1px solid rgba(147, 51, 234, 0.5);
+      border-radius: 8px;
+      padding: 2px;
+    }
+
+    .lesson-btn {
+      padding: 4px 10px;
+      border: none;
+      background: transparent;
+      color: #c084fc;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lesson-btn.active {
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.5);
+    }
+
+    .btn-action {
+      background: #1e083c;
+      border: 1px solid rgba(147, 51, 234, 0.45);
+      color: #e2e8f0;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+      background: #2f0f5e;
+      border-color: #a855f7;
+    }
+
+    .btn-action.btn-reset {
+      background: rgba(76, 5, 25, 0.85);
+      border-color: rgba(225, 29, 72, 0.5);
+      color: #fecdd3;
+    }
+    .btn-action.btn-reset:hover {
+      background: rgba(136, 19, 55, 0.9);
+    }
+
+    .btn-action.bgm-active {
+      border-color: #10b981;
+      color: #6ee7b7;
+    }
+
+    /* Player Turn Header Status */
+    .players-bar {
+      width: 100%;
+      max-width: 900px;
+      margin: 4px auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .player-card {
+      padding: 6px 12px;
+      border-radius: 10px;
+      background: rgba(20, 4, 40, 0.7);
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0.5;
+    }
+
+    .player-card.active-p1 {
+      border: 2px solid #06b6d4;
+      background: rgba(30, 8, 60, 0.95);
+      box-shadow: 0 0 16px rgba(6, 182, 212, 0.45);
+      opacity: 1;
+    }
+
+    .player-card.active-p2 {
+      border: 2px solid #f59e0b;
+      background: rgba(30, 8, 60, 0.95);
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.45);
+      opacity: 1;
+    }
+
+    .p-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .p-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .p1-avatar { background: rgba(6, 182, 212, 0.2); border: 1px solid #06b6d4; color: #67e8f9; }
+    .p2-avatar { background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fcd34d; }
+
+    .p-info-title { font-size: 12px; font-weight: bold; }
+    .p-info-status { font-size: 11px; color: #94a3b8; }
+
+    /* Instructional Prompt Banner */
+    .instruction-strip {
+      width: 100%;
+      max-width: 900px;
+      margin: 2px auto;
+      background: rgba(59, 7, 100, 0.65);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      padding: 5px 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #06ffa5;
+      flex-shrink: 0;
+    }
+
+    .main-game-stage {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      padding: 4px 0;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 8px;
+      width: 100%;
+      height: 100%;
+      max-height: 72vh;
+      aspect-ratio: 4 / 3;
+      max-width: 720px;
+      padding: 8px;
+      background: rgba(20, 4, 40, 0.6);
+      border: 1px solid rgba(147, 51, 234, 0.35);
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+    }
+
+    /* 3D Flip Card Architecture */
+    .perspective-card {
+      perspective: 800px;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-style: preserve-3d;
+    }
+
+    .card-inner.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 9px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      text-align: center;
+    }
+
+    /* Front Face: Pinyin + Chinese */
+    .card-front {
+      background: linear-gradient(180deg, #1e083c 0%, #120224 100%);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .perspective-card:hover .card-front {
+      border-color: #06ffa5;
+      transform: scale(1.02);
+    }
+
+    .card-front .pinyin {
+      font-size: 11px;
+      color: #67e8f9;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+      opacity: 0.95;
+    }
+
+    .card-front .hanzi {
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 1px;
+    }
+
+    /* Back Face: English Meaning */
+    .card-back {
+      background: linear-gradient(180deg, #2e1065 0%, #1e1b4b 100%);
+      border: 1px solid rgba(52, 211, 153, 0.6);
+      transform: rotateY(180deg);
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-back .meaning-tag {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #34d399;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+
+    .card-back .english {
+      font-size: 13px;
+      font-weight: bold;
+      color: #f8fafc;
+      line-height: 1.25;
+      padding: 0 4px;
+    }
+
+    .card-back .chinese-hint {
+      font-size: 10px;
+      color: #c084fc;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Poison Shattered Card Face */
+    .card-back.poison-hit {
+      background: linear-gradient(180deg, #881337 0%, #450a0a 100%) !important;
+      border: 2px solid #ef4444 !important;
+      box-shadow: 0 0 24px rgba(239, 68, 68, 0.9), inset 0 0 12px rgba(239, 68, 68, 0.5) !important;
+    }
+
+    /* Screen Shatter Shake Animation */
+    @keyframes shatterShake {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      15% { transform: translate(-8px, 6px) rotate(-2deg); }
+      30% { transform: translate(8px, -6px) rotate(2deg); }
+      45% { transform: translate(-6px, -4px) rotate(-1.5deg); }
+      60% { transform: translate(6px, 4px) rotate(1.5deg); }
+      75% { transform: translate(-3px, 2px) rotate(-0.5deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+    .shatter-shake {
+      animation: shatterShake 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    /* Standalone Modal Backdrop */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #140428;
+      border: 1px solid rgba(168, 85, 247, 0.6);
+      width: 100%;
+      max-width: 460px;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(147, 51, 234, 0.3);
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: #06ffa5;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .modal-close {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #2f0f5e;
+      border: none;
+      color: #d8b4fe;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-y: auto;
+      margin-bottom: 12px;
+    }
+
+    .rule-box {
+      background: rgba(47, 15, 94, 0.5);
+      border: 1px solid rgba(147, 51, 234, 0.3);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 8px;
+    }
+
+    .rule-box strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .modal-btn-confirm {
+      width: 100%;
+      padding: 9px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      border: none;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    /* Custom Vocab List Inputs */
+    .vocab-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(30, 8, 60, 0.7);
+      border: 1px solid rgba(147, 51, 234, 0.3);
+      border-radius: 8px;
+      padding: 5px;
+      margin-bottom: 6px;
+    }
+
+    .vocab-row input {
+      background: #0c0217;
+      border: 1px solid rgba(147, 51, 234, 0.4);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    /* Game Over Modal Special Design */
+    .gameover-box {
+      background: linear-gradient(180deg, #140428 0%, #06000d 100%);
+      border: 2px solid #ef4444;
+      box-shadow: 0 0 35px rgba(239, 68, 68, 0.6);
+      text-align: center;
+    }
+
+    /* Floating Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(47, 15, 94, 0.95);
+      border: 1px solid #a855f7;
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: rgba(192, 132, 252, 0.6);
+      padding: 2px 0;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Top Header Navigation & Controls -->
+  <header class="top-header">
+    <div class="brand">
+      <div class="brand-icon">🧪</div>
+      <div>
+        <span class="brand-title">Poison Candy</span>
+        <span class="brand-sub">The Witch's Duel</span>
+      </div>
+    </div>
+
+    <!-- Controls Toolbar -->
+    <div class="controls-group">
+      <!-- Lesson 1 / 2 Switcher -->
+      <div class="lesson-toggle-box">
+        <button id="lesson1Btn" class="lesson-btn active" onclick="switchLesson(1)" title="Lesson 1: Moving & Daily">L1</button>
+        <button id="lesson2Btn" class="lesson-btn" onclick="switchLesson(2)" title="Lesson 2: Housework & Life">L2</button>
+      </div>
+
+      <!-- BGM Toggle -->
+      <button id="bgmBtn" class="btn-action" onclick="toggleBGM()" title="Toggle Web Audio Mysterious BGM">
+        <span id="bgmIcon">🎵</span>
+        <span id="bgmText">BGM: Off</span>
+      </button>
+
+      <!-- Custom Vocab Button -->
+      <button class="btn-action" onclick="openVocabModal()" style="color:#67e8f9;" title="Edit Words">
+        <span>✏️</span>
+        <span>Words</span>
+      </button>
+
+      <!-- Rules Button -->
+      <button class="btn-action" onclick="openRulesModal()" title="How to Play">
+        <span>📜</span>
+        <span>Rules</span>
+      </button>
+
+      <!-- Reset Game Button -->
+      <button class="btn-action btn-reset" onclick="initGame()" title="Restart Round">
+        <span>🔄</span>
+        <span>Reset</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Player Turn Status Bar -->
+  <section class="players-bar">
+    <!-- Player 1 Status Card -->
+    <div id="p1Card" class="player-card active-p1">
+      <div class="p-meta">
+        <div class="p-avatar p1-avatar">P1</div>
+        <div>
+          <div class="p-info-title" style="color: #67e8f9;">Player 1</div>
+          <div id="p1Status" class="p-info-status">Choosing poison...</div>
+        </div>
+      </div>
+      <div id="p1Indicator" style="font-size: 15px;">⏳</div>
+    </div>
+
+    <!-- Player 2 Status Card -->
+    <div id="p2Card" class="player-card">
+      <div class="p-meta">
+        <div class="p-avatar p2-avatar">P2</div>
+        <div>
+          <div class="p-info-title" style="color: #fcd34d;">Player 2</div>
+          <div id="p2Status" class="p-info-status">Waiting...</div>
+        </div>
+      </div>
+      <div id="p2Indicator" style="font-size: 15px;">🙈</div>
+    </div>
+  </section>
+
+  <!-- Instructional Prompt Strip -->
+  <div id="instructionBanner" class="instruction-strip">
+    <span id="bannerText">Step 1: Player 1, secretly click any card to prime your Poison Candy!</span>
+  </div>
+
+  <!-- 4x4 Rectangular Card Grid Container -->
+  <main class="main-game-stage">
+    <div id="gridContainer" class="grid-container">
+      <!-- 16 Rectangular Cards injected dynamically via JS -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <span>Poison Candy Duel • Say the meaning before flipping • 100% Offline & School Firewall Safe</span>
+  </footer>
+
+  <!-- Rules Modal (English) -->
+  <div id="rulesModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title"><span>📜</span> How to Play</div>
+        <button class="modal-close" onclick="closeRulesModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="rule-box">
+          <strong style="color: #67e8f9;">1. Secret Poison Priming:</strong>
+          Player 1 secretly clicks 1 card to be their poison (Player 2 looks away). Next, Player 2 secretly clicks 1 card to be their poison (Player 1 looks away).
+        </div>
+        <div class="rule-box">
+          <strong style="color: #fcd34d;">2. Duel & Meaning Challenge:</strong>
+          Take turns clicking a card. Before clicking to reveal, say its English meaning out loud based on the Chinese & Pinyin on the front!
+        </div>
+        <div class="rule-box">
+          <strong style="color: #f87171;">3. Glass Shatter & Game Over:</strong>
+          If anyone flips either poison card, a bottle shatter sound plays, the screen shakes, and that player gets poisoned and loses immediately!
+        </div>
+      </div>
+      <button class="modal-btn-confirm" onclick="closeRulesModal()">Got It, Let's Duel!</button>
+    </div>
+  </div>
+
+  <!-- Custom Vocabulary Editor Modal -->
+  <div id="vocabModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <div class="modal-title" style="color: #67e8f9;"><span>✏️</span> Custom Vocabulary (16 Words)</div>
+        <button class="modal-close" onclick="closeVocabModal()">✕</button>
+      </div>
+      <p style="font-size: 11px; color: #c084fc; margin-bottom: 8px;">
+        Edit the 16 words below. Each card requires Chinese, Pinyin, and English.
+      </p>
+      <div id="vocabInputsList" class="modal-body" style="max-height: 48vh; padding-right: 4px;">
+        <!-- Injected by JS -->
+      </div>
+      <div style="display: flex; gap: 8px; margin-top: 4px;">
+        <button class="btn-action" onclick="resetDefaultVocab()" style="flex: 1; justify-content: center;">Reset Default</button>
+        <button class="modal-btn-confirm" onclick="saveCustomVocab()" style="flex: 2;">Apply & Restart Game</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div id="gameOverModal" class="modal-overlay">
+    <div id="shatterBox" class="modal-card gameover-box" style="max-width: 420px;">
+      <div style="font-size: 46px; margin-bottom: 6px;">🧪💥☠️</div>
+      <h2 style="font-size: 24px; font-weight: 900; color: #f87171; letter-spacing: 1px; margin-bottom: 4px;">GAME OVER</h2>
+      <p style="font-size: 12px; color: #fca5a5; margin-bottom: 12px;">The potion bottle has shattered into pieces!</p>
+
+      <div id="winnerStatement" style="background: rgba(136, 19, 55, 0.6); border: 1px solid rgba(239, 68, 68, 0.6); padding: 10px; border-radius: 10px; margin-bottom: 12px;">
+        <!-- Injected by JS -->
+      </div>
+
+      <div style="background: rgba(30, 8, 60, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 10px; padding: 8px; margin-bottom: 14px;">
+        <div style="font-size: 11px; color: #c084fc; margin-bottom: 2px;">Triggered Poison Word:</div>
+        <div id="poisonWordRevealed" style="font-size: 18px; font-weight: 900; color: #fcd34d;"></div>
+      </div>
+
+      <button class="modal-btn-confirm" onclick="initGame()" style="background: linear-gradient(135deg, #059669, #0d9488); font-size: 14px;">
+        Play Again
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Message Element -->
+  <div id="toast" class="toast">Message</div>
+
+  <script>
+    /**
+     * Lesson 1: 16 Words (Moving, Transportation & Furniture)
+     */
+    const LESSON_1 = [
+      { cn: "搬家",   pinyin: "bān jiā",       en: "To move house" },
+      { cn: "楼",     pinyin: "lóu",           en: "Building / Floor" },
+      { cn: "欢迎",   pinyin: "huān yíng",     en: "Welcome" },
+      { cn: "地铁",   pinyin: "dì tiě",        en: "Subway / Metro" },
+      { cn: "自行车", pinyin: "zì xíng chē",   en: "Bicycle" },
+      { cn: "近",     pinyin: "jìn",           en: "Near / Close" },
+      { cn: "叔叔",   pinyin: "shū shu",       en: "Uncle" },
+      { cn: "礼物",   pinyin: "lǐ wù",         en: "Gift / Present" },
+      { cn: "参观",   pinyin: "cān guān",      en: "To visit / Tour" },
+      { cn: "沙发",   pinyin: "shā fā",        en: "Sofa" },
+      { cn: "椅子",   pinyin: "yǐ zi",         en: "Chair" },
+      { cn: "桌子",   pinyin: "zhuō zi",       en: "Table / Desk" },
+      { cn: "可爱",   pinyin: "kě ài",         en: "Cute / Lovely" },
+      { cn: "照片",   pinyin: "zhào piàn",     en: "Photo / Picture" },
+      { cn: "小时候", pinyin: "xiǎo shí hou",  en: "In childhood / When young" },
+      { cn: "离",     pinyin: "lí",            en: "Away from / From" }
+    ];
+
+    /**
+     * Lesson 2: 16 Words (Housework, Daily Routines & Living)
+     */
+    const LESSON_2 = [
+      { cn: "做家务", pinyin: "zuò jiā wù",    en: "Do housework" },
+      { cn: "做饭",   pinyin: "zuò fàn",       en: "Cook / Make a meal" },
+      { cn: "洗衣机", pinyin: "xǐ yī jī",      en: "Washing machine" },
+      { cn: "毛巾",   pinyin: "máo jīn",       en: "Towel" },
+      { cn: "脏衣服", pinyin: "zāng yī fu",    en: "Dirty clothes" },
+      { cn: "鞋子",   pinyin: "xié zi",        en: "Shoes" },
+      { cn: "放",     pinyin: "fàng",          en: "Put / Place" },
+      { cn: "轮流",   pinyin: "lún liú",       en: "Take turns" },
+      { cn: "很忙",   pinyin: "hěn máng",      en: "Very busy" },
+      { cn: "漂亮",   pinyin: "piào liang",    en: "Pretty / Beautiful" },
+      { cn: "干净",   pinyin: "gān jìng",      en: "Clean" },
+      { cn: "舒服",   pinyin: "shū fu",        en: "Comfortable" },
+      { cn: "通常",   pinyin: "tōng cháng",    en: "Usually / Normally" },
+      { cn: "打扫",   pinyin: "dǎ sǎo",        en: "Clean / Sweep" },
+      { cn: "房间",   pinyin: "fáng jiān",     en: "Room" },
+      { cn: "能干",   pinyin: "néng gàn",      en: "Capable / Competent" }
+    ];
+
+    let currentLessonNum = 1;
+    let currentVocabList = JSON.parse(JSON.stringify(LESSON_1));
+
+    const STAGE = {
+      P1_CHOOSE: 'P1_CHOOSE',
+      P2_CHOOSE: 'P2_CHOOSE',
+      PLAYING: 'PLAYING',
+      GAME_OVER: 'GAME_OVER'
+    };
+
+    let gameState = {
+      stage: STAGE.P1_CHOOSE,
+      p1PoisonIndex: null,
+      p2PoisonIndex: null,
+      activePlayer: 1,
+      flippedCards: new Set(),
+      boardCards: []
+    };
+
+    /* ========================================================
+       Web Audio API Sound Engine (100% Zero-External-Download)
+       ======================================================== */
+    let audioCtx = null;
+    let bgmTimer = null;
+    let bgmDroneOsc = null;
+    let bgmDroneGain = null;
+    let isBgmPlaying = false;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContextClass();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playCardFlipSound() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(750, now + 0.09);
+
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.1);
+      } catch (e) {}
+    }
+
+    function playPoisonSelectSound() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(260, now);
+        osc.frequency.setValueAtTime(440, now + 0.06);
+        osc.frequency.setValueAtTime(660, now + 0.12);
+
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.26);
+      } catch (e) {}
+    }
+
+    function playGlassShatterSound() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        // White noise shatter blast
+        const bufferSize = ctx.sampleRate * 0.7;
+        const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.14));
+        }
+
+        const whiteNoise = ctx.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = "highpass";
+        filter.frequency.setValueAtTime(1600, now);
+        filter.frequency.exponentialRampToValueAtTime(4000, now + 0.25);
+
+        const noiseGain = ctx.createGain();
+        noiseGain.gain.setValueAtTime(0.85, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+
+        whiteNoise.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(ctx.destination);
+        whiteNoise.start(now);
+
+        // High frequency shards ringing
+        const shardFreqs = [2400, 3100, 3900, 4800, 1900];
+        shardFreqs.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const oscGain = ctx.createGain();
+          const delay = now + idx * 0.035;
+
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, delay);
+          osc.frequency.exponentialRampToValueAtTime(freq * 0.65, delay + 0.22);
+
+          oscGain.gain.setValueAtTime(0.25, delay);
+          oscGain.gain.exponentialRampToValueAtTime(0.001, delay + 0.22);
+
+          osc.connect(oscGain);
+          oscGain.connect(ctx.destination);
+          osc.start(delay);
+          osc.stop(delay + 0.23);
+        });
+
+        // Low thud
+        const thud = ctx.createOscillator();
+        const thudGain = ctx.createGain();
+        thud.type = "sine";
+        thud.frequency.setValueAtTime(150, now);
+        thud.frequency.exponentialRampToValueAtTime(35, now + 0.35);
+
+        thudGain.gain.setValueAtTime(0.7, now);
+        thudGain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+
+        thud.connect(thudGain);
+        thudGain.connect(ctx.destination);
+        thud.start(now);
+        thud.stop(now + 0.36);
+      } catch (e) {}
+    }
+
+    function startBGM() {
+      try {
+        const ctx = getAudioContext();
+        if (isBgmPlaying) return;
+        isBgmPlaying = true;
+
+        bgmDroneOsc = ctx.createOscillator();
+        bgmDroneGain = ctx.createGain();
+        bgmDroneOsc.type = "sine";
+        bgmDroneOsc.frequency.setValueAtTime(65.41, ctx.currentTime);
+
+        bgmDroneGain.gain.setValueAtTime(0.01, ctx.currentTime);
+        bgmDroneGain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 3);
+
+        bgmDroneOsc.connect(bgmDroneGain);
+        bgmDroneGain.connect(ctx.destination);
+        bgmDroneOsc.start();
+
+        const notes = [130.81, 155.56, 174.61, 196.00, 233.08, 261.63, 311.13, 392.00, 466.16];
+
+        function playEerieChime() {
+          if (!isBgmPlaying) return;
+          try {
+            const now = ctx.currentTime;
+            const note = notes[Math.floor(Math.random() * notes.length)];
+            const osc = ctx.createOscillator();
+            const noteGain = ctx.createGain();
+
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(note, now);
+
+            noteGain.gain.setValueAtTime(0.001, now);
+            noteGain.gain.linearRampToValueAtTime(0.05, now + 0.4);
+            noteGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
+
+            osc.connect(noteGain);
+            noteGain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + 2.9);
+          } catch (e) {}
+
+          const nextInterval = 1200 + Math.random() * 1600;
+          bgmTimer = setTimeout(playEerieChime, nextInterval);
+        }
+
+        playEerieChime();
+        updateBgmUI(true);
+      } catch (e) {}
+    }
+
+    function stopBGM() {
+      isBgmPlaying = false;
+      if (bgmTimer) {
+        clearTimeout(bgmTimer);
+        bgmTimer = null;
+      }
+      if (bgmDroneGain && audioCtx) {
+        try {
+          bgmDroneGain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+          setTimeout(() => {
+            if (bgmDroneOsc) {
+              bgmDroneOsc.stop();
+              bgmDroneOsc.disconnect();
+              bgmDroneOsc = null;
+            }
+          }, 600);
+        } catch (e) {}
+      }
+      updateBgmUI(false);
+    }
+
+    function toggleBGM() {
+      if (isBgmPlaying) {
+        stopBGM();
+        showToast("Mysterious BGM Paused");
+      } else {
+        startBGM();
+        showToast("Mysterious BGM Playing 🎵");
+      }
+    }
+
+    function updateBgmUI(active) {
+      const text = document.getElementById('bgmText');
+      const btn = document.getElementById('bgmBtn');
+      if (active) {
+        text.textContent = 'BGM: On';
+        btn.classList.add('bgm-active');
+      } else {
+        text.textContent = 'BGM: Off';
+        btn.classList.remove('bgm-active');
+      }
+    }
+
+    /* ========================================================
+       STREAMING_CHUNK:Game logic, grid creation and interaction
+       ======================================================== */
+    function shuffle(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function initGame() {
+      closeRulesModal();
+      closeVocabModal();
+
+      document.getElementById('gameOverModal').classList.remove('open');
+
+      gameState.stage = STAGE.P1_CHOOSE;
+      gameState.p1PoisonIndex = null;
+      gameState.p2PoisonIndex = null;
+      gameState.activePlayer = 1;
+      gameState.flippedCards.clear();
+
+      let list = [...currentVocabList];
+      while (list.length < 16) {
+        list.push({ cn: `词${list.length + 1}`, pinyin: `cí`, en: `Word ${list.length + 1}` });
+      }
+      list = list.slice(0, 16);
+      gameState.boardCards = shuffle(list);
+
+      updatePlayerTurnUI();
+      renderGrid();
+    }
+
+    function renderGrid() {
+      const container = document.getElementById('gridContainer');
+      container.innerHTML = '';
+
+      gameState.boardCards.forEach((item, index) => {
+        const cardWrapper = document.createElement('div');
+        cardWrapper.className = 'perspective-card';
+        cardWrapper.setAttribute('data-index', index);
+        cardWrapper.onclick = () => handleCardClick(index);
+
+        const isFlipped = gameState.flippedCards.has(index);
+
+        const cardInner = document.createElement('div');
+        cardInner.className = `card-inner ${isFlipped ? 'is-flipped' : ''}`;
+        cardInner.id = `card-inner-${index}`;
+
+        // Front Face: Pinyin + Chinese
+        const frontFace = document.createElement('div');
+        frontFace.className = 'card-face card-front';
+        frontFace.innerHTML = `
+          <div class="pinyin">${item.pinyin}</div>
+          <div class="hanzi">${item.cn}</div>
+        `;
+
+        // Back Face: English Meaning
+        const backFace = document.createElement('div');
+        backFace.className = 'card-face card-back';
+        backFace.innerHTML = `
+          <div class="meaning-tag">Meaning</div>
+          <div class="english">${item.en}</div>
+          <div class="chinese-hint">${item.cn}</div>
+        `;
+
+        cardInner.appendChild(frontFace);
+        cardInner.appendChild(backFace);
+        cardWrapper.appendChild(cardInner);
+        container.appendChild(cardWrapper);
+      });
+    }
+
+    function handleCardClick(index) {
+      if (gameState.stage === STAGE.P1_CHOOSE) {
+        gameState.p1PoisonIndex = index;
+        playPoisonSelectSound();
+        showToast(`Player 1 primed card #${index + 1} with secret poison! 🧪`);
+        gameState.stage = STAGE.P2_CHOOSE;
+        updatePlayerTurnUI();
+        return;
+      }
+
+      if (gameState.stage === STAGE.P2_CHOOSE) {
+        if (index === gameState.p1PoisonIndex) {
+          showToast(`⚠️ Card already has an incantation! Choose another card.`);
+          return;
+        }
+        gameState.p2PoisonIndex = index;
+        playPoisonSelectSound();
+        showToast(`Player 2 primed poison! The duel begins! ⚔️`);
+        gameState.stage = STAGE.PLAYING;
+        gameState.activePlayer = 1;
+        updatePlayerTurnUI();
+        return;
+      }
+
+      if (gameState.stage === STAGE.PLAYING) {
+        if (gameState.flippedCards.has(index)) {
+          return;
+        }
+
+        flipCardVisual(index);
+
+        const isP1Poison = (index === gameState.p1PoisonIndex);
+        const isP2Poison = (index === gameState.p2PoisonIndex);
+
+        if (isP1Poison || isP2Poison) {
+          handlePoisonHit(index, isP1Poison, isP2Poison);
+          return;
+        }
+
+        playCardFlipSound();
+        gameState.activePlayer = (gameState.activePlayer === 1) ? 2 : 1;
+        updatePlayerTurnUI();
+      }
+    }
+
+    function flipCardVisual(index) {
+      gameState.flippedCards.add(index);
+      const inner = document.getElementById(`card-inner-${index}`);
+      if (inner) {
+        inner.classList.add('is-flipped');
+      }
+    }
+
+    function handlePoisonHit(index, isP1Poison, isP2Poison) {
+      gameState.stage = STAGE.GAME_OVER;
+
+      playGlassShatterSound();
+
+      const mainGrid = document.getElementById('gridContainer');
+      mainGrid.classList.add('shatter-shake');
+      setTimeout(() => mainGrid.classList.remove('shatter-shake'), 650);
+
+      const inner = document.getElementById(`card-inner-${index}`);
+      const backFace = inner ? inner.querySelector('.card-back') : null;
+      if (backFace) {
+        backFace.classList.add('poison-hit');
+        backFace.innerHTML = `
+          <div style="font-size: 10px; font-weight: 900; color: #fecdd3;">POISON! ☠️</div>
+          <div style="font-size: 16px; font-weight: 900; color: #fff; margin: 2px 0;">${gameState.boardCards[index].cn}</div>
+          <div style="font-size: 11px; color: #fecdd3;">${gameState.boardCards[index].en}</div>
+        `;
+      }
+
+      const poisonedPlayer = gameState.activePlayer;
+      const winnerPlayer = (poisonedPlayer === 1) ? 2 : 1;
+      const cardObj = gameState.boardCards[index];
+
+      setTimeout(() => {
+        const gameOverModal = document.getElementById('gameOverModal');
+        const winnerStatement = document.getElementById('winnerStatement');
+        const poisonWordRevealed = document.getElementById('poisonWordRevealed');
+        const shatterBox = document.getElementById('shatterBox');
+
+        shatterBox.classList.add('shatter-shake');
+
+        let note = isP1Poison 
+          ? `Player ${poisonedPlayer} triggered Player 1's secret poison!`
+          : `Player ${poisonedPlayer} triggered Player 2's secret poison!`;
+
+        winnerStatement.innerHTML = `
+          <div style="color: #fca5a5; font-size: 13px; margin-bottom: 2px;">Player ${poisonedPlayer} was Poisoned!</div>
+          <div style="font-size: 18px; color: #06ffa5; font-weight: 900;">🎉 Player ${winnerPlayer} Wins!</div>
+          <div style="font-size: 11px; color: #e9d5ff; margin-top: 4px;">${note}</div>
+        `;
+
+        poisonWordRevealed.innerHTML = `
+          <span>${cardObj.cn}</span>
+          <span style="font-size: 12px; color: #67e8f9; margin-left: 4px;">(${cardObj.pinyin})</span>
+          <div style="font-size: 12px; color: #e2e8f0; margin-top: 2px;">${cardObj.en}</div>
+        `;
+
+        gameOverModal.classList.add('open');
+      }, 500);
+    }
+
+    function updatePlayerTurnUI() {
+      const p1Card = document.getElementById('p1Card');
+      const p2Card = document.getElementById('p2Card');
+      const p1Status = document.getElementById('p1Status');
+      const p2Status = document.getElementById('p2Status');
+      const p1Indicator = document.getElementById('p1Indicator');
+      const p2Indicator = document.getElementById('p2Indicator');
+      const bannerText = document.getElementById('bannerText');
+
+      if (gameState.stage === STAGE.P1_CHOOSE) {
+        p1Card.className = 'player-card active-p1';
+        p2Card.className = 'player-card';
+        p1Status.innerHTML = '<span style="color:#67e8f9; font-weight:bold;">Secretly picking poison...</span>';
+        p2Status.textContent = 'Please look away';
+        p1Indicator.textContent = '⏳';
+        p2Indicator.textContent = '🙈';
+        bannerText.textContent = 'Step 1: Player 1, secretly click any card to prime your Poison Candy!';
+      } else if (gameState.stage === STAGE.P2_CHOOSE) {
+        p1Card.className = 'player-card';
+        p2Card.className = 'player-card active-p2';
+        p1Status.innerHTML = '<span style="color:#34d399; font-weight:600;">Poison Primed ✓</span>';
+        p2Status.innerHTML = '<span style="color:#fcd34d; font-weight:bold;">Secretly picking poison...</span>';
+        p1Indicator.textContent = '🔒';
+        p2Indicator.textContent = '⏳';
+        bannerText.textContent = 'Step 2: Player 2, secretly click any card to prime your Poison Candy!';
+      } else if (gameState.stage === STAGE.PLAYING) {
+        p1Indicator.textContent = '🔒';
+        p2Indicator.textContent = '🔒';
+        if (gameState.activePlayer === 1) {
+          p1Card.className = 'player-card active-p1';
+          p2Card.className = 'player-card';
+          p1Status.innerHTML = '<span style="color:#67e8f9; font-weight:800;">👉 Turn to flip</span>';
+          p2Status.textContent = 'Waiting...';
+        } else {
+          p1Card.className = 'player-card';
+          p2Card.className = 'player-card active-p2';
+          p1Status.textContent = 'Waiting...';
+          p2Status.innerHTML = '<span style="color:#fcd34d; font-weight:800;">👉 Turn to flip</span>';
+        }
+        bannerText.textContent = `Player ${gameState.activePlayer}'s Turn: Say the English meaning out loud before clicking!`;
+      }
+    }
+
+    /* ========================================================
+       STREAMING_CHUNK:Custom vocabulary editor & lesson switching
+       ======================================================== */
+    function openVocabModal() {
+      const container = document.getElementById('vocabInputsList');
+      container.innerHTML = '';
+
+      currentVocabList.forEach((item, i) => {
+        const row = document.createElement('div');
+        row.className = 'vocab-row';
+        row.innerHTML = `
+          <span style="width: 20px; font-family: monospace; font-size: 11px; color: #a855f7; font-weight: bold;">${i + 1}.</span>
+          <input type="text" class="vocab-cn" style="width: 80px; font-weight: bold;" value="${item.cn}" placeholder="中文">
+          <input type="text" class="vocab-py" style="width: 110px; color: #67e8f9;" value="${item.pinyin}" placeholder="拼音">
+          <input type="text" class="vocab-en" style="flex: 1;" value="${item.en}" placeholder="English">
+        `;
+        container.appendChild(row);
+      });
+
+      document.getElementById('vocabModal').classList.add('open');
+    }
+
+    function closeVocabModal() {
+      document.getElementById('vocabModal').classList.remove('open');
+    }
+
+    function saveCustomVocab() {
+      const cnInputs = document.querySelectorAll('.vocab-cn');
+      const pyInputs = document.querySelectorAll('.vocab-py');
+      const enInputs = document.querySelectorAll('.vocab-en');
+
+      const newList = [];
+      for (let i = 0; i < cnInputs.length; i++) {
+        newList.push({
+          cn: cnInputs[i].value.trim() || `词${i + 1}`,
+          pinyin: pyInputs[i].value.trim() || 'cí',
+          en: enInputs[i].value.trim() || `Word ${i + 1}`
+        });
+      }
+
+      currentVocabList = newList;
+      closeVocabModal();
+      initGame();
+      showToast("Custom vocabulary applied! New round started.");
+    }
+
+    function resetDefaultVocab() {
+      currentVocabList = JSON.parse(JSON.stringify(currentLessonNum === 1 ? LESSON_1 : LESSON_2));
+      openVocabModal();
+      showToast(`Reset to default Lesson ${currentLessonNum} words.`);
+    }
+
+    function switchLesson(lessonNum) {
+      currentLessonNum = lessonNum;
+      currentVocabList = JSON.parse(JSON.stringify(lessonNum === 1 ? LESSON_1 : LESSON_2));
+
+      const btn1 = document.getElementById('lesson1Btn');
+      const btn2 = document.getElementById('lesson2Btn');
+
+      if (lessonNum === 1) {
+        btn1.classList.add('active');
+        btn2.classList.remove('active');
+      } else {
+        btn2.classList.add('active');
+        btn1.classList.remove('active');
+      }
+
+      initGame();
+      showToast(`Switched to Lesson ${lessonNum} (16 Words)! 📚`);
+    }
+
+    function openRulesModal() {
+      document.getElementById('rulesModal').classList.add('open');
+    }
+
+    function closeRulesModal() {
+      document.getElementById('rulesModal').classList.remove('open');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2200);
+    }
+
+    // Auto initialize on DOM ready
+    window.addEventListener('load', () => {
+      initGame();
+    });
+  </script>
+</body>
+</html>
